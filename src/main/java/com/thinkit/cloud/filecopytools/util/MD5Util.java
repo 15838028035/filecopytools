@@ -5,8 +5,14 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class MD5Util {
+	private static final  Logger logger = LoggerFactory.getLogger(MD5Util.class);
+	
+	
     /**
      * 默认的密码字符串组合，apache校验下载的文件的正确性用的就是默认的这个组合
      */
@@ -20,12 +26,6 @@ public class MD5Util {
         e.printStackTrace();
     }
     }
-
-    public static void  main(String []args) throws Exception{
-    	File file = new File("d:\\soft\\Windows.iso");
-    	String md5 = MD5Util.getFileMD5String(file);
-    	System.out.println("md5==" + md5);
-    }
     
     /**
      * 计算文件的MD5
@@ -36,9 +36,10 @@ public class MD5Util {
      * @throws IOException
      */
     public String getFileMD5String(String fileName) throws IOException {
-    File f = new File(fileName);
-    return getFileMD5String(f);
+    File file = new File(fileName);
+    return getFileMD5String(file);
     }
+    
 
     /**
      * 计算文件的MD5，重载方法
@@ -53,6 +54,8 @@ public class MD5Util {
         return "";
     }
     
+    String filePath = file.getAbsolutePath();
+    
     FileInputStream in = new FileInputStream(file);
     byte[] buffer = new byte[1024 * 1024 * 10];
     int len = 0;
@@ -60,20 +63,21 @@ public class MD5Util {
         messageDigest.update(buffer, 0, len);
     }
     in.close();
-    return bufferToHex(messageDigest.digest());
+    return bufferToHex(filePath,messageDigest.digest());
+    }
+    
+
+    public  static  String bufferToHex(String filePath,byte bytes[]) {
+    return bufferToHex(filePath,bytes, 0, bytes.length);
     }
 
-    private static  String bufferToHex(byte bytes[]) {
-    return bufferToHex(bytes, 0, bytes.length);
-    }
-
-    private static String bufferToHex(byte bytes[], int m, int n) {
+    private static String bufferToHex(String filePath,byte bytes[], int m, int n) {
     StringBuffer stringbuffer = new StringBuffer(2 * n);
     int k = m + n;
     for (int l = m; l < k; l++) {
         appendHexPair(bytes[l], stringbuffer);
     }
-    System.out.println("文件MD5值:" + stringbuffer);
+    logger.info("文件路径:{}  , 文件的md5:{}",filePath,stringbuffer.toString());
     return stringbuffer.toString();
     }
 

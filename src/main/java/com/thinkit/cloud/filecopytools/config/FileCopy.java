@@ -73,9 +73,10 @@ public class FileCopy {
 		
 		List<String> errorFilePathList = new ArrayList<>();
 		List<String> ingore4GFileList = new ArrayList<>();
+		List<String> deleteFileList = new ArrayList<>();
+		List<String> copyFileList = new ArrayList<>();
 		
-		
-		for(String filesubDir: copyFiles) {
+		copyFiles.forEach(filesubDir->{
 			
 			String fileDir = sourceDir + File.separator + filesubDir;
 			
@@ -86,10 +87,8 @@ public class FileCopy {
 			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
 			
 			
-			for(File file: listFilesSource) {
+			listFilesSource.forEach(file->{
 				try {
-					
-					logger.info("开始处理判断文件{}",file.getAbsoluteFile());
 					
 					boolean isRun = false;
 					if("all".equals(synType)) {
@@ -107,6 +106,8 @@ public class FileCopy {
 					}
 					
 					if(isRun) {
+						
+						 logger.info("开始处理判断文件{}",file.getAbsoluteFile());
 						
 						String destFilePath = file.getAbsolutePath().replace(sourceDir, destDir);
 						
@@ -156,6 +157,7 @@ public class FileCopy {
 						
 						if(isCopyFile && !isIgnoreDir) {
 							logger.info("开始复制文件,原始目录:{}, 目标目录:{}",file.getAbsolutePath(), destFile.getAbsolutePath());
+							copyFileList.add(file.getAbsolutePath());
 							CopyFilesUtils.copyFileUsingApacheCommonsIO(file,destFile);
 						}
 						
@@ -167,9 +169,9 @@ public class FileCopy {
 					logger.error("复制文件出现失败, 文件路径:{}",file.getAbsolutePath());
 					errorFilePathList.add(file.getAbsolutePath());
 				}
-			}
-		}
-		
+			});
+				
+		});
 		
 		Long endTime = System.currentTimeMillis();
 		logger.info("文件复制结束了");
@@ -177,14 +179,57 @@ public class FileCopy {
 		
 		logger.info("复制出现失败的文件信息:");
 		
-		for(String str: errorFilePathList) {
+		errorFilePathList.forEach(str-> {
 			logger.info(str);
-		}
+		});
 		
 		logger.info("忽略大于4G的文件信息:");
 		
-		for(String str: ingore4GFileList) {
+		ingore4GFileList.forEach(str-> {
 			logger.info(str);
-		}
+		});
+		
+		logger.info("文件复制结束了");
+		
+		logger.info("复制的文件个数:{}", copyFileList.size());
+		logger.info("复制的文件信息:");
+		
+		copyFileList.forEach(str-> {
+			logger.info(str);
+		});
+		
+		logger.info("开始比对删除的文件");
+		
+		copyFiles.forEach(filesubDir-> {
+			String fileDirDest = destDir + File.separator + filesubDir;
+			File fileDirDestFile= new File(fileDirDest);
+			List <File> listFilesDest =  (List<File>)MyFileUtils.listFiles(fileDirDestFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
+			
+			listFilesDest.forEach(file-> {
+				try {
+					String sourceFilePath = file.getAbsolutePath().replace(destDir, sourceDir);
+					File sourceFile = new File(sourceFilePath);
+					
+					if( !sourceFile.exists()) {
+						deleteFileList.add(file.getAbsolutePath());
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					errorFilePathList.add(file.getAbsolutePath());
+				}
+			});
+			
+		});
+		
+		logger.info("删除的文件信息");
+		deleteFileList.forEach(str-> {
+			logger.info(str);
+		});
+		
+		Long endTime2 = System.currentTimeMillis();
+		logger.info("文件复制处理结束了");
+		logger.info("文件复制总共处理时间:" +(endTime2-startTime)/1000 + "秒");
+		
 	}
 }

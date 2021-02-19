@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -66,26 +64,6 @@ public class MyFileUtils {
 	        File[] found = directory.listFiles((FileFilter) filter);
 	        
 	        List<File> foundFileList = Arrays.asList(found);
-	        
-	        //检测目录下的文件，进行文件排序
-	        Collections.sort(foundFileList,new Comparator<File>(){
-				@Override
-				public int compare(File o1, File o2) {
-					String filePath1 = o1.getAbsolutePath();
-					String filePath2 = o2.getAbsolutePath();
-					
-					String findStr = "SREI_Voice_";
-					int find1 = filePath1.indexOf(findStr);
-					int find2 = filePath2.indexOf(findStr);
-					if(find1>-1 && find2>-1){
-						String sortNo1 = filePath1.substring(find1+15,find1+16);
-						String sortNo2 = filePath2.substring(find2+15,find2+16);
-						return Integer.valueOf(sortNo2)-Integer.valueOf(sortNo1);
-					}
-					return 1;
-					
-				}
-			});
 	        
 	        if (found != null) {
 	            for (File file : foundFileList) {
