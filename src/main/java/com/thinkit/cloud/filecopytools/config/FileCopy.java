@@ -173,24 +173,22 @@ public class FileCopy {
 		
 		GLogger.info("复制出现失败的文件信息:");
 		
-		errorFilePathList.forEach(str-> {
-			GLogger.info(str);
-		});
+		errorFilePathList.forEach(str-> 
+			GLogger.info(str)
+		);
 		
 		GLogger.info("忽略大于4G的文件信息:");
 		
-		ingore4GFileList.forEach(str-> {
-			GLogger.info(str);
-		});
+		ingore4GFileList.forEach(str-> 
+			GLogger.info(str)
+		);
 		
 		GLogger.info("文件复制结束了");
 		
 		GLogger.info("复制的文件个数:{0}", String.valueOf(copyFileList.size()));
 		GLogger.info("复制的文件信息:");
 		
-		copyFileList.forEach(str-> {
-			GLogger.info(str);
-		});
+		copyFileList.forEach(str-> GLogger.info(str) );
 		
 		GLogger.info("开始比对删除的文件");
 		
@@ -217,9 +215,9 @@ public class FileCopy {
 		});
 		
 		GLogger.info("删除的文件信息");
-		deleteFileList.forEach(str-> {
-			GLogger.info(str);
-		});
+		deleteFileList.forEach(str ->  
+			GLogger.info(str)
+		);
 		
 		Long endTime2 = System.currentTimeMillis();
 		GLogger.info("文件复制处理结束了");
