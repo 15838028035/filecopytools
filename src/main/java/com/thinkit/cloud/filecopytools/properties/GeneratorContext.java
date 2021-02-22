@@ -12,11 +12,11 @@ public class GeneratorContext {
   /**
    * 生成器模板的上下文,存放在context中的变量,模板可以直接引用
    **/
-  static ThreadLocal<Map<Object,Object>> context = new ThreadLocal<Map<Object,Object>>();
+  static ThreadLocal<Map<Object,Object>> context = new ThreadLocal<>();
   /**
    * GeneratorProperties可以引用的上下文
    **/
-  static ThreadLocal<Properties> generatorProperties = new ThreadLocal<Properties>();
+  static ThreadLocal<Properties> generatorProperties = new ThreadLocal<>();
 
   public static void clear() {
     context.set(null);
