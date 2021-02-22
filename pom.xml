@@ -33,26 +33,6 @@
 		
 	</dependencies>
 
-	<build>
-		<plugins>
-			    <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <layout>ZIP</layout>
-                    <includes>
-                        <!-- 项目启动jar包中排除依赖包 -->
-                        <include>
-                            <groupId>non-exists</groupId>
-                            <artifactId>non-exists</artifactId>
-                        </include>
-                    </includes>
-                </configuration>
-            </plugin>
-            
-		</plugins>
-	</build>
-
 	<profiles>
 		<profile>
             <id>profile2</id>

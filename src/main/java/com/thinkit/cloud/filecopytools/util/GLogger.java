@@ -22,7 +22,7 @@ public class GLogger {
    */
   public static void debug(String s) {
     if (logLevel <= DEBUG) {
-      System.out.println("[Generator DEBUG] " + s);
+      System.out.println("[CopyInfo DEBUG] " + s);
     }
   }
 
@@ -34,7 +34,7 @@ public class GLogger {
    */
   public static void info(String s) {
     if (logLevel <= INFO) {
-      System.out.println("[Generator INFO] " + s);
+      System.out.println("[CopyInfo INFO] " + s);
     }
   }
   
@@ -54,7 +54,7 @@ public class GLogger {
       }
       
     if (logLevel <= INFO) {
-      System.out.println("[Generator INFO] " + formattedMessage);
+      System.out.println("[CopyInfo INFO] " + formattedMessage);
     }
   }
 
@@ -66,7 +66,7 @@ public class GLogger {
    */
   public static void warn(String s) {
     if (logLevel <= WARN) {
-      System.err.println("[Generator WARN] " + s);
+      System.err.println("[CopyInfo WARN] " + s);
     }
   }
 
@@ -78,7 +78,7 @@ public class GLogger {
    */
   public static void warn(String s, Throwable e) {
     if (logLevel <= WARN) {
-      System.err.println("[Generator WARN] " + s);
+      System.err.println("[CopyInfo WARN] " + s);
       e.printStackTrace();
     }
   }
@@ -91,7 +91,7 @@ public class GLogger {
    */
   public static void error(String s) {
     if (logLevel <= ERROR) {
-      System.err.println("[Generator ERROR] " + s);
+      System.err.println("[CopyInfo ERROR] " + s);
     }
   }
 
@@ -103,7 +103,7 @@ public class GLogger {
    */
   public static void error(String s, Throwable e) {
     if (logLevel <= ERROR) {
-      System.err.println("[Generator ERROR] " + s);
+      System.err.println("[CopyInfo ERROR] " + s);
       e.printStackTrace();
     }
   }
