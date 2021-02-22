@@ -160,7 +160,6 @@ public class FileCopy {
 					
 					
 				} catch (Exception e) {
-					e.printStackTrace();
 					GLogger.error("复制文件出现失败, 文件路径:"+file.getAbsolutePath());
 					errorFilePathList.add(file.getAbsolutePath());
 				}
@@ -210,7 +209,7 @@ public class FileCopy {
 					}
 					
 				} catch (Exception e) {
-					e.printStackTrace();
+					GLogger.error("开始比对删除的文件出现失败, 文件路径:"+file.getAbsolutePath());
 					errorFilePathList.add(file.getAbsolutePath());
 				}
 			});
