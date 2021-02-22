@@ -1,7 +1,5 @@
 package com.thinkit.cloud.filecopytools.config;
 
-import java.util.List;
-
 /**
  * 文件复制对象
  *
