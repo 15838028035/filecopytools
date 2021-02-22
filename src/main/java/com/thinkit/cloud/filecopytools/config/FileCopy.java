@@ -2,34 +2,29 @@ package com.thinkit.cloud.filecopytools.config;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
 import com.thinkit.cloud.filecopytools.util.CopyFilesUtils;
+import com.thinkit.cloud.filecopytools.util.GLogger;
 import com.thinkit.cloud.filecopytools.util.MD5Util;
 import com.thinkit.cloud.filecopytools.util.MyFileUtils;
 import com.thinkit.cloud.filecopytools.util.MyIOFileFilter;
 import com.thinkit.cloud.filecopytools.util.NotTmpDirectoryFileFilter;
-import com.thinkit.cloud.filecopytools.util.SpringContextUtil;
 
-@Component
 public class FileCopy {
 	
-	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	public void start() {
+	public void start(FileCopyBean fileCopyBean) {
 		
 		Long startTime = System.currentTimeMillis();
-		
-		FileCopyBean fileCopyBean = (FileCopyBean) SpringContextUtil.getBean("fileCopyBean") ;
 		
 		String sourceDir = fileCopyBean.getSourceDir();
 		String destDir = fileCopyBean.getDestDir();
 		
-		List<String> copyFiles = fileCopyBean.getCopyFiles();
+		String copyFilesStr = fileCopyBean.getCopyFiles();
+		
+		List<String> copyFiles =Arrays.asList(copyFilesStr.split(","));
 		
 		String ingoredList = fileCopyBean.getIngoredList();
 		
@@ -37,37 +32,37 @@ public class FileCopy {
 		
 		int updateTime = fileCopyBean.getUpdateTime();
 		
-		 logger.info("开始进行读取文件目录了");
+		GLogger.info("开始进行读取文件目录了");
 		   
-		logger.info("文件复制原目录:{}",sourceDir);
-		logger.info("文件复制目标目录:{}",destDir);
-		logger.info(" 需要复制的文件对象个数:{}",copyFiles.size());
-		logger.info("配置忽略目录下的文件{}",ingoredList);
-		logger.info(" 配置同步类型:{}",synType);
-		logger.info("文件修改时间{}",updateTime);
+		 GLogger.info("文件复制原目录:{0}",sourceDir);
+		 GLogger.info("文件复制目标目录:{0}",destDir);
+		 GLogger.info(" 需要复制的文件对象个数:{0}",copyFiles.size());
+		 GLogger.info("配置忽略目录下的文件{0}",ingoredList);
+		 GLogger.info(" 配置同步类型:{0}",synType);
+		 GLogger.info("文件修改时间{0}",String.valueOf(updateTime));
 		
 		
 		File sourceDirFile = new File(sourceDir);
 		
 		if(sourceDirFile.isDirectory() && !sourceDirFile.exists()) {
-			logger.info("文件复制原目录:{}不存在",sourceDir);
+			GLogger.info("文件复制原目录:{0}不存在",sourceDir);
 			return ;
 		}
 		
 		if(!sourceDirFile.isDirectory()) {
-			logger.info("文件复制原目录:{}不存在",sourceDir);
+			GLogger.info("文件复制原目录:{0}不存在",sourceDir);
 			return ;
 		}
 		
 		File destDirFile = new File(destDir);
 		
 		if(destDirFile.isDirectory() && !destDirFile.exists()) {
-			logger.info("文件复制目标目录:{}不存在",sourceDir);
+			GLogger.info("文件复制目标目录:{0}不存在",sourceDir);
 			return ;
 		}
 		
 		if(!destDirFile.isDirectory()) {
-			logger.info("文件复制目标目录:{}不存在",destDirFile);
+			GLogger.info("文件复制目标目录:{0}不存在",destDirFile);
 			return ;
 		}
 		
@@ -82,7 +77,7 @@ public class FileCopy {
 			
 			File fileDirSourceFile= new File(fileDir);
 			
-			logger.info("开始获取{}目录下的文件列",fileDir);
+			GLogger.info("开始获取{0}目录下的文件列",fileDir);
 			
 			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
 			
@@ -107,7 +102,7 @@ public class FileCopy {
 					
 					if(isRun) {
 						
-						 logger.info("开始处理判断文件{}",file.getAbsoluteFile());
+						GLogger.info("开始处理判断文件{0}",file.getAbsoluteFile());
 						
 						String destFilePath = file.getAbsolutePath().replace(sourceDir, destDir);
 						
@@ -156,7 +151,7 @@ public class FileCopy {
 						}
 						
 						if(isCopyFile && !isIgnoreDir) {
-							logger.info("开始复制文件,原始目录:{}, 目标目录:{}",file.getAbsolutePath(), destFile.getAbsolutePath());
+							GLogger.info("开始复制文件,原始目录:{0}, 目标目录:{1}",file.getAbsolutePath(), destFile.getAbsolutePath());
 							copyFileList.add(file.getAbsolutePath());
 							CopyFilesUtils.copyFileUsingApacheCommonsIO(file,destFile);
 						}
@@ -166,7 +161,7 @@ public class FileCopy {
 					
 				} catch (Exception e) {
 					e.printStackTrace();
-					logger.error("复制文件出现失败, 文件路径:{}",file.getAbsolutePath());
+					GLogger.error("复制文件出现失败, 文件路径:"+file.getAbsolutePath());
 					errorFilePathList.add(file.getAbsolutePath());
 				}
 			});
@@ -174,31 +169,31 @@ public class FileCopy {
 		});
 		
 		Long endTime = System.currentTimeMillis();
-		logger.info("文件复制结束了");
-		logger.info("文件复制总共共花费时间:" +(endTime-startTime)/1000 + "秒");
+		GLogger.info("文件复制结束了");
+		GLogger.info("文件复制总共共花费时间:" +(endTime-startTime)/1000 + "秒");
 		
-		logger.info("复制出现失败的文件信息:");
+		GLogger.info("复制出现失败的文件信息:");
 		
 		errorFilePathList.forEach(str-> {
-			logger.info(str);
+			GLogger.info(str);
 		});
 		
-		logger.info("忽略大于4G的文件信息:");
+		GLogger.info("忽略大于4G的文件信息:");
 		
 		ingore4GFileList.forEach(str-> {
-			logger.info(str);
+			GLogger.info(str);
 		});
 		
-		logger.info("文件复制结束了");
+		GLogger.info("文件复制结束了");
 		
-		logger.info("复制的文件个数:{}", copyFileList.size());
-		logger.info("复制的文件信息:");
+		GLogger.info("复制的文件个数:{0}", String.valueOf(copyFileList.size()));
+		GLogger.info("复制的文件信息:");
 		
 		copyFileList.forEach(str-> {
-			logger.info(str);
+			GLogger.info(str);
 		});
 		
-		logger.info("开始比对删除的文件");
+		GLogger.info("开始比对删除的文件");
 		
 		copyFiles.forEach(filesubDir-> {
 			String fileDirDest = destDir + File.separator + filesubDir;
@@ -222,14 +217,14 @@ public class FileCopy {
 			
 		});
 		
-		logger.info("删除的文件信息");
+		GLogger.info("删除的文件信息");
 		deleteFileList.forEach(str-> {
-			logger.info(str);
+			GLogger.info(str);
 		});
 		
 		Long endTime2 = System.currentTimeMillis();
-		logger.info("文件复制处理结束了");
-		logger.info("文件复制总共处理时间:" +(endTime2-startTime)/1000 + "秒");
+		GLogger.info("文件复制处理结束了");
+		GLogger.info("文件复制总共处理时间:" +(endTime2-startTime)/1000 + "秒");
 		
 	}
 }

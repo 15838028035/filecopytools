@@ -1,36 +1,23 @@
 package com.thinkit.cloud.filecopytools;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.thinkit.cloud.filecopytools.config.FileCopy;
-import com.thinkit.cloud.filecopytools.util.SpringContextUtil;
+import com.thinkit.cloud.filecopytools.config.FileCopyBean;
+import com.thinkit.cloud.filecopytools.properties.FileCopyGeneratorProperties;
 
 /**
  *启动类
  */
-@SpringBootApplication
-@RestController
 public class FileCoypToolsApplication {
-	private static  Logger logger = LoggerFactory.getLogger(FileCoypToolsApplication.class);
 	
 	
     public static void main(String[] args) {
-    	ApplicationContext applicationContext = SpringApplication.run(FileCoypToolsApplication.class, args);
     	
-    	if(applicationContext == null) {
-    		logger.error("applicationContext为空");
-    		return ;
-    	}
+    	FileCopyGeneratorProperties.reload();
     	
-    	SpringContextUtil.setApplicationContext(applicationContext);
-     
-        FileCopy fileCopy = (FileCopy) SpringContextUtil.getBean("fileCopy") ;
+    	FileCopyBean fileCopyBean = (FileCopyBean)FileCopyGeneratorProperties.getProperties().get("fileCopyBean");
+    	
+        FileCopy fileCopy = new FileCopy();
         
-        fileCopy.start();
+        fileCopy.start(fileCopyBean);
     }
 }

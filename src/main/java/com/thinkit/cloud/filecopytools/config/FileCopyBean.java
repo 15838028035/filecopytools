@@ -2,15 +2,10 @@ package com.thinkit.cloud.filecopytools.config;
 
 import java.util.List;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
 /**
  * 文件复制对象
  *
  */
-@Component
-@ConfigurationProperties(prefix = "copy")
 public class FileCopyBean {
 
 	/**
@@ -26,7 +21,7 @@ public class FileCopyBean {
 	/**
 	 * 需要复制的文件对象
 	 */
-	private List<String> copyFiles;
+	private String  copyFiles;
 	
 	/**
 	 *  配置忽略目录下的文件
@@ -59,11 +54,11 @@ public class FileCopyBean {
 		this.destDir = destDir;
 	}
 
-	public List<String> getCopyFiles() {
+	public String getCopyFiles() {
 		return copyFiles;
 	}
 
-	public void setCopyFiles(List<String> copyFiles) {
+	public void setCopyFiles(String copyFiles) {
 		this.copyFiles = copyFiles;
 	}
 

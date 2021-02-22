@@ -5,13 +5,8 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public class MD5Util {
-	private static final  Logger logger = LoggerFactory.getLogger(MD5Util.class);
-	
 	
     /**
      * 默认的密码字符串组合，apache校验下载的文件的正确性用的就是默认的这个组合
@@ -77,7 +72,7 @@ public class MD5Util {
     for (int l = m; l < k; l++) {
         appendHexPair(bytes[l], stringbuffer);
     }
-    logger.info("文件路径:{}  , 文件的md5:{}",filePath,stringbuffer.toString());
+    GLogger.info("文件路径:{0}  , 文件的md5:{1}",filePath,stringbuffer.toString());
     return stringbuffer.toString();
     }
 
