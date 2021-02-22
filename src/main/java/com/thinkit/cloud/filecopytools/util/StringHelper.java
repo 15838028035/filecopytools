@@ -226,15 +226,6 @@ public class StringHelper {
     return result.toString();
   }
 
-  public static String getJavaClassSimpleName(String clazz) {
-    if (clazz == null)
-      return null;
-    if (clazz.lastIndexOf(".") >= 0) {
-      return clazz.substring(clazz.lastIndexOf(".") + 1);
-    }
-    return clazz;
-  }
-
   public static String removePrefix(String str, String prefix) {
     return removePrefix(str, prefix, false);
   }
