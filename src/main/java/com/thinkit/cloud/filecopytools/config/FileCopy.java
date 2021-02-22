@@ -81,7 +81,6 @@ public class FileCopy {
 			
 			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
 			
-			
 			listFilesSource.forEach(file->{
 				try {
 					
@@ -172,23 +171,18 @@ public class FileCopy {
 		GLogger.info("文件复制总共共花费时间:" +(endTime-startTime)/1000 + "秒");
 		
 		GLogger.info("复制出现失败的文件信息:");
-		
-		errorFilePathList.forEach(str-> 
-			GLogger.info(str)
-		);
+		errorFilePathList.forEach(GLogger::info);  
 		
 		GLogger.info("忽略大于4G的文件信息:");
 		
-		ingore4GFileList.forEach(str-> 
-			GLogger.info(str)
-		);
+		ingore4GFileList.forEach(GLogger::info);  
 		
 		GLogger.info("文件复制结束了");
 		
 		GLogger.info("复制的文件个数:{0}", String.valueOf(copyFileList.size()));
 		GLogger.info("复制的文件信息:");
 		
-		copyFileList.forEach(str-> GLogger.info(str) );
+		copyFileList.forEach(GLogger::info);  
 		
 		GLogger.info("开始比对删除的文件");
 		
@@ -215,9 +209,8 @@ public class FileCopy {
 		});
 		
 		GLogger.info("删除的文件信息");
-		deleteFileList.forEach(str ->  
-			GLogger.info(str)
-		);
+		
+		deleteFileList.forEach(GLogger::info);  
 		
 		Long endTime2 = System.currentTimeMillis();
 		GLogger.info("文件复制处理结束了");

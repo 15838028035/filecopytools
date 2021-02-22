@@ -50,13 +50,15 @@ public class MD5Util {
     
     String filePath = file.getAbsolutePath();
     
-    FileInputStream in = new FileInputStream(file);
-    byte[] buffer = new byte[1024 * 1024 * 10];
-    int len = 0;
-    while ((len = in.read(buffer)) > 0) {
-        messageDigest.update(buffer, 0, len);
+    try (  FileInputStream in = new FileInputStream(file);) {
+	    byte[] buffer = new byte[1024 * 1024 * 10];
+	    int len = 0;
+	    while ((len = in.read(buffer)) > 0) {
+	        messageDigest.update(buffer, 0, len);
+	    }
+    }catch(Exception e) {
+    	 GLogger.error("获取文件md5出现错误，文件路径:"+filePath);
     }
-    in.close();
     return bufferToHex(filePath,messageDigest.digest());
     }
     
