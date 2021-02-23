@@ -3,9 +3,9 @@ package com.thinkit.cloud.filecopytools.properties;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.InvalidPropertiesFormatException;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 import com.thinkit.cloud.filecopytools.config.FileCopyBean;
 import com.thinkit.cloud.filecopytools.util.GLogger;
@@ -51,28 +51,28 @@ public class FileCopyGeneratorProperties {
 
       FileCopyBean fileCopyBean = new FileCopyBean();
       
-      for (Iterator it = p.entrySet().iterator(); it.hasNext();) {
-        Map.Entry entry = (Map.Entry) it.next();
-        System.out.println("[Property] " + entry.getKey() + "=" + entry.getValue());
-        
-        String keyToString = entry.getKey().toString();
-        
-        if("copy.sourceDir".equalsIgnoreCase(keyToString)) {
-        	fileCopyBean.setSourceDir(entry.getValue().toString());
-        } else if("copy.destDir".equalsIgnoreCase(keyToString)) {
-        	fileCopyBean.setDestDir(entry.getValue().toString());
-        } else if("copy.copyFiles".equalsIgnoreCase(keyToString)) {
-        	fileCopyBean.setCopyFiles(entry.getValue().toString());
-        }
-        else if("copy.ingoredList".equalsIgnoreCase(keyToString)) {
-        	fileCopyBean.setIngoredList(entry.getValue().toString());
-        } else if("copy.synType".equalsIgnoreCase(keyToString)) {
-        	fileCopyBean.setSynType(entry.getValue().toString());
-        } else if("copy.updateTime".equalsIgnoreCase(keyToString)) {
-        	fileCopyBean.setUpdateTime(Integer.valueOf(entry.getValue().toString()));
-        }
-        	
-      }
+      Set<Entry<Object, Object>> set = propertiesHelper.entrySet();
+      
+      set.forEach(entry-> {
+    	  GLogger.debug("[Property] " + entry.getKey() + "=" + entry.getValue());
+          
+          String keyToString = entry.getKey().toString();
+          
+          if("copy.sourceDir".equalsIgnoreCase(keyToString)) {
+          	fileCopyBean.setSourceDir(entry.getValue().toString());
+          } else if("copy.destDir".equalsIgnoreCase(keyToString)) {
+          	fileCopyBean.setDestDir(entry.getValue().toString());
+          } else if("copy.copyFiles".equalsIgnoreCase(keyToString)) {
+          	fileCopyBean.setCopyFiles(entry.getValue().toString());
+          }
+          else if("copy.ingoredList".equalsIgnoreCase(keyToString)) {
+          	fileCopyBean.setIngoredList(entry.getValue().toString());
+          } else if("copy.synType".equalsIgnoreCase(keyToString)) {
+          	fileCopyBean.setSynType(entry.getValue().toString());
+          } else if("copy.updateTime".equalsIgnoreCase(keyToString)) {
+          	fileCopyBean.setUpdateTime(Integer.valueOf(entry.getValue().toString()));
+          }
+      });
       
       Properties propsA = new Properties();
       propsA.put("fileCopyBean", fileCopyBean);
@@ -119,14 +119,6 @@ public class FileCopyGeneratorProperties {
     return getHelper().getNullIfBlank(key);
   }
 
-  public static String[] getStringArray(String key) {
-    return getHelper().getStringArray(key);
-  }
-
-  public static int[] getIntArray(String key) {
-    return getHelper().getIntArray(key);
-  }
-
   public static boolean getBoolean(String key, boolean defaultValue) {
     return getHelper().getBoolean(key, defaultValue);
   }
@@ -142,11 +134,8 @@ public class FileCopyGeneratorProperties {
    */
   public static void setProperties(Properties inputProps) {
     propertiesHelper = new PropertiesHelper(inputProps, true);
-    for (Iterator it = propertiesHelper.entrySet().iterator(); it.hasNext();) {
-      Map.Entry entry = (Map.Entry) it.next();
-      // assertPropertyKey(entry.getKey().toString());
-      GLogger.debug("[Property] " + entry.getKey() + "=" + entry.getValue());
-    }
-    GLogger.info("");
+    Set<Entry<Object, Object>> set = propertiesHelper.entrySet();
+    
+    set.forEach(entry -> GLogger.debug("[Property] " + entry.getKey() + "=" + entry.getValue()));
   }
 }

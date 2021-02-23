@@ -18,7 +18,6 @@ import java.util.Set;
 import com.thinkit.cloud.filecopytools.util.ClassHelper;
 import com.thinkit.cloud.filecopytools.util.FileHelper;
 import com.thinkit.cloud.filecopytools.util.GLogger;
-import com.thinkit.cloud.filecopytools.util.StringHelper;
 
 
 public class PropertiesHelper {
@@ -77,24 +76,6 @@ public class PropertiesHelper {
 
   public int getRequiredInt(String key) {
     return Integer.parseInt(getRequiredProperty(key));
-  }
-
-  public String[] getStringArray(String key) {
-    String v = getProperty(key);
-    if (v == null) {
-      return new String[0];
-    } else {
-      return StringHelper.tokenizeToStringArray(v, ", \t\n\r\f");
-    }
-  }
-
-  public int[] getIntArray(String key) {
-    String[] array = getStringArray(key);
-    int[] result = new int[array.length];
-    for (int i = 0; i < array.length; i++) {
-      result[i] = Integer.parseInt(array[i]);
-    }
-    return result;
   }
 
   public Boolean getBoolean(String key) {
@@ -166,9 +147,9 @@ public class PropertiesHelper {
 
   public static String[] loadAllPropertiesFromClassLoader(Properties properties, String... resourceNames)
       throws IOException {
-    List successLoadProperties = new ArrayList();
+    List<String> successLoadProperties = new ArrayList<>();
     for (String resourceName : resourceNames) {
-      Enumeration urls = ClassHelper.getDefaultClassLoader().getResources(resourceName);
+      Enumeration<URL> urls = ClassHelper.getDefaultClassLoader().getResources(resourceName);
       while (urls.hasMoreElements()) {
         URL url = (URL) urls.nextElement();
         successLoadProperties.add(url.getFile());
@@ -183,18 +164,20 @@ public class PropertiesHelper {
             Properties loadProperties = new Properties();
             loadProperties.load(input);
             
-            Iterator it = loadProperties.keySet().iterator();
-            while(it.hasNext()) {
-              String key = (String)it.next();
-              Object value = loadProperties.get(key);
-                if(properties.get(key)==null ) {
-                  properties.put(key, value);
-                }else {
-                  GLogger.debug("PropertiesHelper loadAllPropertiesFromClassLoader key " + key + " exists");
-                }
-              }
+            Set<Object> keySet = loadProperties.keySet();
             
+            keySet.forEach(Object -> {
+            	 String key = (String)Object;
+                 Object value = loadProperties.get(key);
+                   if(properties.get(key)==null ) {
+                     properties.put(key, value);
+                   }else {
+                     GLogger.debug("PropertiesHelper loadAllPropertiesFromClassLoader key " + key + " exists");
+                   }
+                 }
+            );
           }
+           
         } finally {
           if (input != null) {
             input.close();
@@ -206,12 +189,6 @@ public class PropertiesHelper {
   }
 
   private static Properties resolveProperties(Properties props) {
-		/*
-		 * Properties result = new Properties(); for (Object s : props.keySet()) {
-		 * String sourceKey = s.toString(); String key = sourceKey; String value =
-		 * props.getProperty(sourceKey); result.setProperty(key, value); } return
-		 * result;
-		 */
 	  return props;
   }
 

@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.List;
 
 public class FileHelper {
   public static String getRelativePath(File baseDir, File file) {
@@ -88,15 +87,6 @@ public class FileHelper {
       return new File(urls.nextElement().getFile());
     }
     throw new FileNotFoundException("classpath:" + resourceName);
-  }
-
-  public static void listFiles(File file, List collector) throws IOException {
-    collector.add(file);
-    if ((!file.isHidden()) && (file.isDirectory())) {
-      File[] subFiles = file.listFiles();
-      for (int i = 0; i < subFiles.length; i++)
-        listFiles(subFiles[i], collector);
-    }
   }
 
   public static String getExtension(String filename) {

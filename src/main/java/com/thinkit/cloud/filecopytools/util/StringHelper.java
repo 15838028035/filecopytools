@@ -1,9 +1,6 @@
 package com.thinkit.cloud.filecopytools.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -245,28 +242,6 @@ public class StringHelper {
       }
     }
     return str;
-  }
-
-  public static String removeCrlf(String str) {
-    if (str == null)
-      return null;
-    return StringHelper.join(StringHelper.tokenizeToStringArray(str, "\t\n\r\f"), " ");
-  }
-
-  public static String[] tokenizeToStringArray(String str, String seperators) {
-    if (str == null)
-      return new String[0];
-    StringTokenizer tokenlizer = new StringTokenizer(str, seperators);
-    List result = new ArrayList();
-    while (tokenlizer.hasMoreElements()) {
-      Object s = tokenlizer.nextElement();
-      result.add(s);
-    }
-    return (String[]) result.toArray(new String[result.size()]);
-  }
-
-  public static String join(List list, String seperator) {
-    return join(list.toArray(new Object[0]), seperator);
   }
 
   public static String join(Object[] array, String seperator) {
