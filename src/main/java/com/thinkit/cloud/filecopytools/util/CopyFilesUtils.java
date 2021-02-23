@@ -121,5 +121,17 @@ public class CopyFilesUtils {
 	        createParentPath(parentFile); // 递归创建父级目录
 	    }
 	}
+	
+	/**
+	 * 创建父级文件夹
+	 * 
+	 * @param file
+	 *            完整路径文件名(注:不是文件夹)
+	 */
+	public static void createDirPath(File file) {
+	    if (null != file  &&!file.exists() ) {
+	    	file.mkdirs(); // 创建文件夹
+	    }
+	}
  
 }

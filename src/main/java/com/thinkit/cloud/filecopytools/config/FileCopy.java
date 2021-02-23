@@ -79,6 +79,11 @@ public class FileCopy {
 			
 			GLogger.info("开始获取{0}目录下的文件列",fileDir);
 			
+			String destFilePathRoot = fileDir.replace(sourceDir, destDir);
+			File destFileRoot = new File(destFilePathRoot);
+			
+			CopyFilesUtils.createDirPath(destFileRoot);
+			
 			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
 			
 			listFilesSource.forEach(file->{
