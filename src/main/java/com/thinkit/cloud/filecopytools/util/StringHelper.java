@@ -188,41 +188,6 @@ public class StringHelper {
     return new String(buffer);
   }
 
-  public static String toUnderscoreName(String name) {
-    if (name == null)
-      return null;
-
-    String filteredName = name;
-    if ((filteredName.indexOf("_") >= 0) && (filteredName.equals(filteredName.toUpperCase()))) {
-      filteredName = filteredName.toLowerCase();
-    }
-    if ((filteredName.indexOf("_") == -1) && (filteredName.equals(filteredName.toUpperCase()))) {
-      filteredName = filteredName.toLowerCase();
-    }
-
-    StringBuilder result = new StringBuilder();
-    if ((filteredName != null) && (filteredName.length() > 0)) {
-      result.append(filteredName.substring(0, 1).toLowerCase());
-      for (int i = 1; i < filteredName.length(); i++) {
-        String preChart = filteredName.substring(i - 1, i);
-        String c = filteredName.substring(i, i + 1);
-        if (c.equals("_")) {
-          result.append("_");
-        } else if (preChart.equals("_")) {
-          result.append(c.toLowerCase());
-        } else if (c.matches("\\d")) {
-          result.append(c);
-        } else if (c.equals(c.toUpperCase())) {
-          result.append("_");
-          result.append(c.toLowerCase());
-        } else {
-          result.append(c);
-        }
-      }
-    }
-    return result.toString();
-  }
-
   public static String removePrefix(String str, String prefix) {
     return removePrefix(str, prefix, false);
   }
