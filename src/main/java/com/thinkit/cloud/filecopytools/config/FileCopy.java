@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.thinkit.cloud.filecopytools.util.CopyFilesUtils;
+import com.thinkit.cloud.filecopytools.util.ForEachUtils;
 import com.thinkit.cloud.filecopytools.util.GLogger;
 import com.thinkit.cloud.filecopytools.util.MD5Util;
 import com.thinkit.cloud.filecopytools.util.MyFileUtils;
@@ -86,7 +87,7 @@ public class FileCopy {
 			
 			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
 			
-			listFilesSource.forEach(file->{
+			ForEachUtils.forEach(1, listFilesSource,(index, file) -> {
 				try {
 					
 					boolean isRun = false;
@@ -106,7 +107,7 @@ public class FileCopy {
 					
 					if(isRun) {
 						
-						GLogger.info("开始处理判断文件{0}",file.getAbsoluteFile());
+						GLogger.info("当前目录目录文件总个数:{0},开始处理判断第{1}个文件,文件路径:{2} ",String.valueOf(listFilesSource.size()),String.valueOf(index),file.getAbsoluteFile());
 						
 						String destFilePath = file.getAbsolutePath().replace(sourceDir, destDir);
 						
@@ -168,8 +169,7 @@ public class FileCopy {
 					errorFilePathList.add(file.getAbsolutePath());
 				}
 			});
-				
-		});
+			});
 		
 		Long endTime = System.currentTimeMillis();
 		GLogger.info("文件复制结束了");
@@ -196,7 +196,7 @@ public class FileCopy {
 			File fileDirDestFile= new File(fileDirDest);
 			List <File> listFilesDest =  (List<File>)MyFileUtils.listFiles(fileDirDestFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
 			
-			listFilesDest.forEach(file-> {
+			ForEachUtils.forEach(1, listFilesDest,(index, file) -> {
 				try {
 					String sourceFilePath = file.getAbsolutePath().replace(destDir, sourceDir);
 					File sourceFile = new File(sourceFilePath);
@@ -210,6 +210,7 @@ public class FileCopy {
 					errorFilePathList.add(file.getAbsolutePath());
 				}
 			});
+			
 			
 		});
 		
