@@ -33,6 +33,10 @@ public class FileCopy {
 		
 		int updateTime = fileCopyBean.getUpdateTime();
 		
+		GLogger.info("===============================");
+		GLogger.info("=======文件复制工具V1.0.1=======");
+		GLogger.info("===============================");
+		
 		GLogger.info("开始进行读取文件目录了");
 		   
 		 GLogger.info("文件复制原目录:{0}",sourceDir);
@@ -41,7 +45,6 @@ public class FileCopy {
 		 GLogger.info("配置忽略目录下的文件{0}",ingoredList);
 		 GLogger.info(" 配置同步类型:{0}",synType);
 		 GLogger.info("文件修改时间{0}",String.valueOf(updateTime));
-		
 		
 		File sourceDirFile = new File(sourceDir);
 		
@@ -78,6 +81,7 @@ public class FileCopy {
 			
 			File fileDirSourceFile= new File(fileDir);
 			
+			GLogger.info("===============================");
 			GLogger.info("开始获取{0}目录下的文件列",fileDir);
 			
 			String destFilePathRoot = fileDir.replace(sourceDir, destDir);
@@ -175,8 +179,11 @@ public class FileCopy {
 		GLogger.info("文件复制结束了");
 		GLogger.info("文件复制总共共花费时间:" +(endTime-startTime)/1000 + "秒");
 		
+		GLogger.info("===============================");
 		GLogger.info("复制出现失败的文件信息:");
 		errorFilePathList.forEach(GLogger::info);  
+		
+		GLogger.info("===============================");
 		
 		GLogger.info("忽略大于4G的文件信息:");
 		
@@ -188,6 +195,7 @@ public class FileCopy {
 		GLogger.info("复制的文件信息:");
 		
 		copyFileList.forEach(GLogger::info);  
+		GLogger.info("===============================");
 		
 		GLogger.info("开始比对删除的文件");
 		
@@ -214,6 +222,7 @@ public class FileCopy {
 			
 		});
 		
+		GLogger.info("===============================");
 		GLogger.info("删除的文件信息");
 		
 		deleteFileList.forEach(GLogger::info);  
