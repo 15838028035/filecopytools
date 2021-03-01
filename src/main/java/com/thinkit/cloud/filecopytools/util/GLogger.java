@@ -8,11 +8,17 @@ import java.text.MessageFormat;
  *
  */
 public class GLogger {
+	
   private static final int DEBUG = 1;
   private static final int INFO = 5;
   private static final int ERROR = 10;
   private static final int WARN = 15;
   public static int logLevel = INFO;
+  
+  private GLogger() {
+	  throw new IllegalStateException("Utility class");
+  }
+  
 
   /**
    * 打印
@@ -22,7 +28,7 @@ public class GLogger {
    */
   public static void debug(String s) {
     if (logLevel <= DEBUG) {
-      System.out.println("[CopyInfo DEBUG] " + s);
+    	printlnInfo("[CopyInfo DEBUG] " + s);
     }
   }
 
@@ -34,7 +40,7 @@ public class GLogger {
    */
   public static void info(String s) {
     if (logLevel <= INFO) {
-      System.out.println("[CopyInfo INFO] " + s);
+    	printlnInfo("[CopyInfo INFO] " + s);
     }
   }
   
@@ -54,7 +60,7 @@ public class GLogger {
       }
       
     if (logLevel <= INFO) {
-      System.out.println("[CopyInfo INFO] " + formattedMessage);
+    	printlnInfo("[CopyInfo INFO] " + formattedMessage);
     }
   }
 
@@ -66,7 +72,7 @@ public class GLogger {
    */
   public static void warn(String s) {
     if (logLevel <= WARN) {
-      System.err.println("[CopyInfo WARN] " + s);
+    	printlnErrorInfo("[CopyInfo WARN] " + s);
     }
   }
 
@@ -78,7 +84,7 @@ public class GLogger {
    */
   public static void warn(String s, Throwable e) {
     if (logLevel <= WARN) {
-      System.err.println("[CopyInfo WARN] " + s);
+    	printlnErrorInfo("[CopyInfo WARN] " + s);
       e.printStackTrace();
     }
   }
@@ -91,7 +97,7 @@ public class GLogger {
    */
   public static void error(String s) {
     if (logLevel <= ERROR) {
-      System.err.println("[CopyInfo ERROR] " + s);
+    	printlnErrorInfo("[CopyInfo ERROR] " + s);
     }
   }
 
@@ -106,5 +112,13 @@ public class GLogger {
       System.err.println("[CopyInfo ERROR] " + s);
       e.printStackTrace();
     }
+  }
+  
+  private static void printlnInfo(String msg) {
+	  System.out.println(msg);
+  }
+  
+  private static void printlnErrorInfo(String msg) {
+	  System.err.println(msg);
   }
 }

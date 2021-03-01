@@ -62,16 +62,12 @@ public class CopyFilesUtils {
 	 * 机器配置：联想Z460 i5CPU 2.53GHz 4GB内存 500GB硬盘 1GB显存
 	 * 
 	 */
-	public static void NioCopyFile(File sourcePathFile , File targetPathFile) throws FileNotFoundException, IOException {
+	public static void nioCopyFile(File sourcePathFile , File targetPathFile) throws FileNotFoundException, IOException {
 		long before = System.currentTimeMillis();
 		
 		File files = sourcePathFile;	//源文件
 		File filet = targetPathFile;	//目标文件
 		
-		/*
-		 * if(!filet.exists()) { filet.createNewFile(); }
-		 */
- 
 		long size = files.length(); 		// 文件总大小
 		long copycount = size * 2 / Integer.MAX_VALUE; //获取读、写之和所占用虚拟内存 倍数
 		int copynum = copycount >= 1 ? (int) copycount + 2 : (int) copycount + 1; // 根据倍数确认分割份数
@@ -104,7 +100,7 @@ public class CopyFilesUtils {
 			GLogger.error("Nio复制文件出现错误"+files.getAbsolutePath()  +" --> " + filet.getAbsolutePath() );
 		}
 		
-		System.out.println("MillTime : "
+		GLogger.info("MillTime : "
 				+ (double) (System.currentTimeMillis() - before) / 1000 + "s");
 	}
 	
