@@ -16,8 +16,8 @@ import com.thinkit.cloud.filecopytools.util.GLogger;
  *
  */
 public class FileCopyGeneratorProperties {
-  public static final String [] PROPERTIES_FILE_NAMES = new String[] { "application.properties" };
-  public static PropertiesHelper propertiesHelper = new PropertiesHelper(new Properties(), true);
+  protected static final String [] PROPERTIES_FILE_NAMES = new String[] { "application.properties" };
+  protected static PropertiesHelper propertiesHelper = new PropertiesHelper(new Properties(), true);
 
   private FileCopyGeneratorProperties() {
   }

@@ -9,6 +9,12 @@ import java.util.Properties;
  * 可以覆盖GeneratorProperties中的属性设置,如果为空,则不覆盖
  */
 public class GeneratorContext {
+	
+	private GeneratorContext() {
+	    throw new IllegalStateException("Utility class");
+	}
+	
+	
   /**
    * 生成器模板的上下文,存放在context中的变量,模板可以直接引用
    **/

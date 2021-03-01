@@ -10,6 +10,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
  * 自定义过滤器，过滤非tmp目录
  *
  */
+@SuppressWarnings("all")
 public class NotTmpDirectoryFileFilter extends AbstractFileFilter implements Serializable {
 
     /**

@@ -9,7 +9,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.InvalidPropertiesFormatException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -151,7 +150,7 @@ public class PropertiesHelper {
     for (String resourceName : resourceNames) {
       Enumeration<URL> urls = ClassHelper.getDefaultClassLoader().getResources(resourceName);
       while (urls.hasMoreElements()) {
-        URL url = (URL) urls.nextElement();
+        URL url = urls.nextElement();
         successLoadProperties.add(url.getFile());
         InputStream input = null;
         try {
@@ -185,7 +184,7 @@ public class PropertiesHelper {
         }
       }
     }
-    return (String[]) successLoadProperties.toArray(new String[0]);
+    return  successLoadProperties.toArray(new String[0]);
   }
 
   private static Properties resolveProperties(Properties props) {
