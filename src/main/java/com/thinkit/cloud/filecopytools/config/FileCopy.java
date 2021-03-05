@@ -11,6 +11,7 @@ import com.thinkit.cloud.filecopytools.util.GLogger;
 import com.thinkit.cloud.filecopytools.util.MD5Util;
 import com.thinkit.cloud.filecopytools.util.MyFileUtils;
 import com.thinkit.cloud.filecopytools.util.MyIOFileFilter;
+import com.thinkit.cloud.filecopytools.util.MyIOFileFilter2;
 import com.thinkit.cloud.filecopytools.util.NotTmpDirectoryFileFilter;
 
 public class FileCopy {
@@ -44,7 +45,7 @@ public class FileCopy {
 		 GLogger.info(" 需要复制的文件对象个数:{0}",copyFiles.size());
 		 GLogger.info("配置忽略目录下的文件{0}",ingoredList);
 		 GLogger.info(" 配置同步类型:{0}",synType);
-		 GLogger.info("文件修改时间{0}",String.valueOf(updateTime));
+		 GLogger.info("文件修改时间天数:{0}",String.valueOf(updateTime));
 		
 		File sourceDirFile = new File(sourceDir);
 		
@@ -89,7 +90,7 @@ public class FileCopy {
 			
 			CopyFilesUtils.createDirPath(destFileRoot);
 			
-			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(synType,updateTime), NotTmpDirectoryFileFilter.INSTANCE);
+			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(synType,updateTime,ingoredList), NotTmpDirectoryFileFilter.INSTANCE);
 			
 			ForEachUtils.forEach(1, listFilesSource,(index, file) -> {
 				try {
@@ -108,19 +109,7 @@ public class FileCopy {
 								isCopyFile = true;
 						}
 						
-						// 判断是否是忽略的文件
-						
-						String []ingoredListArray = ingoredList.split(",");
-						
-						boolean isIgnoreDir = false;
-						for(String str:ingoredListArray) {
-							
-							if(file.getAbsolutePath().contains(str)) {
-								isIgnoreDir = true;
-							}
-						}
-						
-						if(!destFile.isDirectory() && destFile.exists() && !isIgnoreDir) {
+						if(!destFile.isDirectory() && destFile.exists()) {
 							
 							long fileSizeLong = file.length();
 							
@@ -142,7 +131,7 @@ public class FileCopy {
 							
 						}
 						
-						if(isCopyFile && !isIgnoreDir) {
+						if(isCopyFile ) {
 							GLogger.info("开始复制文件,原始目录:{0}, 目标目录:{1}",file.getAbsolutePath(), destFile.getAbsolutePath());
 							copyFileList.add(file.getAbsolutePath());
 							CopyFilesUtils.copyFileUsingApacheCommonsIO(file,destFile);
@@ -182,24 +171,16 @@ public class FileCopy {
 		copyFiles.forEach(filesubDir-> {
 			String fileDirDest = destDir + File.separator + filesubDir;
 			File fileDirDestFile= new File(fileDirDest);
-			List <File> listFilesDest =  (List<File>)MyFileUtils.listFiles(fileDirDestFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
+			List <File> listFilesDest =  (List<File>)MyFileUtils.listFiles(fileDirDestFile, new MyIOFileFilter2(destDir,sourceDir,ingoredList), NotTmpDirectoryFileFilter.INSTANCE);
 			
 			ForEachUtils.forEach(1, listFilesDest,(index, file) -> {
 				try {
-					String sourceFilePath = file.getAbsolutePath().replace(destDir, sourceDir);
-					File sourceFile = new File(sourceFilePath);
-					
-					if( !sourceFile.exists()) {
 						deleteFileList.add(file.getAbsolutePath());
-					}
-					
 				} catch (Exception e) {
 					GLogger.error("开始比对删除的文件出现失败, 文件路径:"+file.getAbsolutePath());
 					errorFilePathList.add(file.getAbsolutePath());
 				}
 			});
-			
-			
 		});
 		
 		GLogger.info("===============================");

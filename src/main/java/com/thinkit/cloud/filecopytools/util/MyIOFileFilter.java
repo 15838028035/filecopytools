@@ -16,6 +16,11 @@ public class MyIOFileFilter implements IOFileFilter{
 	 */
 	private int updateTime;
 	
+	/**
+	 *  配置忽略目录下的文件
+	 */
+	private String ingoredList;
+	
 	private boolean isFilter = false;
 	
 	public String getSynType() {
@@ -34,13 +39,11 @@ public class MyIOFileFilter implements IOFileFilter{
 		this.updateTime = updateTime;
 	}
 	
-	public MyIOFileFilter() {
-	}
-	
-	public MyIOFileFilter(String synType, int updateTime) {
+	public MyIOFileFilter(String synType, int updateTime, String ingoredList) {
 		super();
 		this.synType = synType;
 		this.updateTime = updateTime;
+		this.ingoredList = ingoredList;
 		isFilter = true;
 	}
 	
@@ -63,7 +66,19 @@ public class MyIOFileFilter implements IOFileFilter{
 			if(!"all".equalsIgnoreCase(synType) && betweenDays<updateTime) {
 				isRun = true;
 			}
-			return isRun;
+			
+			// 判断是否是忽略的文件
+			
+			String []ingoredListArray = ingoredList.split(",");
+			
+			boolean isIgnoreDir = false;
+			for(String str:ingoredListArray) {
+				if(file.getAbsolutePath().contains(str)) {
+					isIgnoreDir = true;
+				}
+			}
+			
+			return isRun && !isIgnoreDir;
 		}
 		return true;
 	}
