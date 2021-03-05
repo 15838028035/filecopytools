@@ -79,7 +79,7 @@ public class PropertiesHelper {
 
   public Boolean getBoolean(String key) {
     if (getProperty(key) == null) {
-      return null;
+      return false;
     }
     return Boolean.parseBoolean(getRequiredProperty(key));
   }

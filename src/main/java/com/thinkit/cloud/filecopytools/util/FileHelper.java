@@ -177,9 +177,8 @@ public class FileHelper {
 
   public static String toFilePathIfIsURL(File file) {
     try {
-      return new URL(((File) file).getPath()).getPath();
+      return new URL((file).getPath()).getPath();
     } catch (MalformedURLException e) {
-      // ignore,fallback to file.getPath()
       return file.getPath();
     }
   }

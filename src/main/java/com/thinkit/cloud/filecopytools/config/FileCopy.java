@@ -89,28 +89,11 @@ public class FileCopy {
 			
 			CopyFilesUtils.createDirPath(destFileRoot);
 			
-			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(), NotTmpDirectoryFileFilter.INSTANCE);
+			List <File> listFilesSource =  (List<File>)MyFileUtils.listFiles(fileDirSourceFile, new MyIOFileFilter(synType,updateTime), NotTmpDirectoryFileFilter.INSTANCE);
 			
 			ForEachUtils.forEach(1, listFilesSource,(index, file) -> {
 				try {
 					
-					boolean isRun = false;
-					if("all".equals(synType)) {
-						isRun = true;
-					}
-					
-					// 文件最后修改时间
-					long lastModified = file.lastModified();
-					long nowDate = System.currentTimeMillis();
-					
-					long betweenDays = (nowDate - lastModified) / (1000 * 3600 * 24);
-					
-					if(!"all".equalsIgnoreCase(synType) && betweenDays<updateTime) {
-						isRun = true;
-					}
-					
-					if(isRun) {
-						
 						GLogger.info("当前目录目录文件总个数:{0},开始处理判断第{1}个文件,文件路径:{2} ",String.valueOf(listFilesSource.size()),String.valueOf(index),file.getAbsoluteFile());
 						
 						String destFilePath = file.getAbsolutePath().replace(sourceDir, destDir);
@@ -164,9 +147,6 @@ public class FileCopy {
 							copyFileList.add(file.getAbsolutePath());
 							CopyFilesUtils.copyFileUsingApacheCommonsIO(file,destFile);
 						}
-						
-					}
-					
 					
 				} catch (Exception e) {
 					GLogger.error("复制文件出现失败, 文件路径:"+file.getAbsolutePath());
