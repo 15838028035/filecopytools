@@ -40,8 +40,7 @@ public class NotTmpDirectoryFileFilter extends AbstractFileFilter implements Ser
      */
     @Override
     public boolean accept(File file) {
-    	Boolean isNotTmp = !file.getName().contains("tmp");
-        return file.isDirectory() && isNotTmp;	
+    	return true;
     }
 
 }

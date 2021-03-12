@@ -52,7 +52,7 @@ public class MyIOFileFilter implements IOFileFilter{
 	public boolean accept(File file) {
 		if(isFilter) {
 			
-			boolean isRun = false;
+ 			boolean isRun = false;
 			if("all".equals(synType)) {
 				isRun = true;
 			}
@@ -64,6 +64,17 @@ public class MyIOFileFilter implements IOFileFilter{
 			long betweenDays = (nowDate - lastModified) / (1000 * 3600 * 24);
 			
 			if(!"all".equalsIgnoreCase(synType) && betweenDays<updateTime) {
+				isRun = true;
+			}
+			
+			File parentFile = file.getParentFile();
+			
+			// 判断父文件夹，如果父文件夹的时间， 满足，就进行文件复制
+			long lastModifiedParentFile = parentFile.lastModified();
+			
+			long betweenDaysParent = (nowDate - lastModifiedParentFile) / (1000 * 3600 * 24);
+			
+			if(!"all".equalsIgnoreCase(synType) && betweenDaysParent<updateTime) {
 				isRun = true;
 			}
 			
